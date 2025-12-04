@@ -51,6 +51,10 @@ end
 v_fwd = zeros(1,length(x_me));
 v_bwd = zeros(1,length(x_me));
 v_ct = zeros(1,length(x_me));
+v_bwd(1) = v0;
+v_ct(1) = v0;
+v_fwd(length(v_fwd)) = 0;
+v_ct(length(v_fwd)) = 0;
 for i = 1:length(x_me)
     if(i<length(x_me))
         disp(i + "forwards")
@@ -58,7 +62,7 @@ for i = 1:length(x_me)
     end
     if(i>1)
         disp(i + "backwards")
-        v_bwd(i) = (x_me(i) - x_me(i-1)/h);
+        v_bwd(i) = (x_me(i) - x_me(i-1))/h;
     end
     if(i>1 && i<length(x_me))
         disp(i + "centered")
@@ -70,7 +74,7 @@ end
 
 %% Plot the results of the Euler's method
 lwid = 2; font = 16;
-nrow = 3; ncol = 1;
+nrow = 2; ncol = 1;
 figure;
 subplot(nrow,ncol,1);
 hold on; box on; grid on; axis tight;
@@ -89,12 +93,14 @@ xlabel('t');
 ylabel('v');
 hold on; box on; grid on; axis tight;
 legend show;
-subplot(nrow,ncol,3);
 hold on; box on; grid on; axis tight;
 set(gca,'LineWidth',lwid,'Fontsize',font);
+figure();
 % plot(tt, v_th, '-','LineWidth',lwid, 'DisplayName','Velocity Finite Difference Method Approximation');
 plot(tt, v_fwd, '-.','LineWidth',lwid, 'DisplayName','Forward Finite Difference Method');
+hold on;
 plot(tt, v_bwd, '-.','LineWidth',lwid, 'DisplayName','Backward Finite Difference Method');
+hold on;
 plot(tt, v_ct, '-.','LineWidth',lwid, 'DisplayName','Centered Finite Difference Method');
 xlabel('t');
 ylabel('v');
